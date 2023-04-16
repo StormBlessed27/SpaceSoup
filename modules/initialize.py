@@ -1,46 +1,58 @@
 import pygame, sys
-
-from modules import options, spaceShip
-
+from modules import options, spaceShip, Asteroid
 
 def initialize():
-  pygame.init()
 
-  screen = pygame.display.set_mode((options.WINDOW_WIDTH, options.WINDOW_HEIGHT))
+  pygame.init()
+  screen = pygame.display.set_mode((options.WIDTH, options.HEIGHT))
   pygame.display.set_caption("Space Soup")
   gameClock = pygame.time.Clock()
-  #ship = spaceShip.spaceShip(options.WINDOW_WIDTH/2, options.WINDOW_HEIGHT/2, options.SHIPSPEED)
-
+  
   #Game Background
-  background=pygame.image.load("SpaceSoup-main/assets/images/fondo4.png")
+  background=pygame.image.load(options.Background_IMAGE)
+
+  #Sprites-group
+  all_sprites=pygame.sprite.Group()
+  Asteroid_list=pygame.sprite.Group()
+  Bullets=pygame.sprite.Group()
+
 
   #Player
-  # ship=spaceShip()
-  # sprites=pygame.sprite.Group()
-  # sprites.add(ship)
+  ship=spaceShip.spaceShip()
+  all_sprites.add(ship)
 
- 
-  while True:
+  #Asteroid
+  asteroid=Asteroid.Asteroid()
+  Asteroid_list.add(asteroid)
+  all_sprites.add(asteroid)
+
+  #limites
+  def limits():
+    if ship.rect.top <=0 or ship.rect.bottom >= options.HEIGHT:
+      if ship.rect.top <= 0: ship.rect.top=0
+      if ship.rect.bottom >= options.HEIGHT: ship.rect.bottom = options.HEIGHT
+    if ship.rect.left <=0 or ship.rect.right >= options.WIDTH:
+      if ship.rect.left <= 0: ship.rect.left=0
+      if ship.rect.right >= options.WIDTH: ship.rect.right=options.WIDTH
+
+
+  is_running=True
+  while is_running:
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
-        pygame.quit()
-        sys.exit()
- 
+        is_running=False
+      
+      
     screen.blit(background,(0,0))
-    #ship.Move()
-    #sprites.update()
-  
+    ship.Move()
+    asteroid.Move()
+    all_sprites.update()
+    all_sprites.draw(screen)
+    limits()
 
-    # if ship.rect.top <=0 or ship.rect.bottom >= options.WINDOW_HEIGHT:
-    #   if ship.rect.top <= 0: ship.rect.top=0
-    #   if ship.rect.bottom >= options.WINDOW_HEIGHT: ship.rect.bottom = options.WINDOW_HEIGHT
-    # if ship.rect.left <=0 or ship.rect.right >= options.WINDOW_WIDTH:
-    #   if ship.rect.left <= 0: ship.rect.left=0
-    #   if ship.rect.right >= options.WINDOW_WIDTH: ship.rect.right=options.WINDOW_WIDTH
+    hits=pygame.sprite.spritecollide(ship,Asteroid_list,True)
+    if hits:
+      is_running=False
 
-
-    pygame.display.update()
+    pygame.display.flip()
     gameClock.tick(60)
-
-
-

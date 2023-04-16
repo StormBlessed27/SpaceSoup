@@ -19,7 +19,6 @@ class Asteroid(pygame.sprite.Sprite):
       if self.rect.top > options.HEIGHT+10 or self.rect.left< -20 or self.rect.right>options.WIDTH+20:
           self.rect.x =random.randrange(options.WIDTH-self.rect.width)
           self.rect.y =random.randrange(-100, -40)
-          self.speedy = 3
     
     def IncreaseSpeed(self):
-        pass
+        self.speedy+=2

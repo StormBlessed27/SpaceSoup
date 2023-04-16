@@ -1,45 +1,54 @@
-import pygame, sys
+import pygame
 
-from modules import options, spaceShip
+from modules import SpaceShip, options, enemies
 
 
 def initialize():
+  
+  #Initialize screen and pygame motor
   pygame.init()
-
-  screen = pygame.display.set_mode((options.WINDOW_WIDTH, options.WINDOW_HEIGHT))
+  pygame.mixer.init()
+  screen = pygame.display.set_mode((options.WIDTH, options.HEIGHT))
+  background = pygame.image.load(options.BACKGROUND_IMG)
   pygame.display.set_caption("Space Soup")
   gameClock = pygame.time.Clock()
-  #ship = spaceShip.spaceShip(options.WINDOW_WIDTH/2, options.WINDOW_HEIGHT/2, options.SHIPSPEED)
+  is_running = True
+  
 
-  #Game Background
-  background=pygame.image.load("SpaceSoup-main/assets/images/fondo4.png")
+  sprites = pygame.sprite.Group()
+  asteroids = pygame.sprite.Group()
+  ship = SpaceShip.spaceShip()
+  sprites.add(ship)
 
-  #Player
-  # ship=spaceShip()
-  # sprites=pygame.sprite.Group()
-  # sprites.add(ship)
+  for i in range(9):
+    asteroid = enemies.Asteroid(options.ASTEROID_IMG)
+    sprites.add(asteroid)
+    asteroids.add(asteroid)
 
- 
-  while True:
+
+  while is_running:
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
         pygame.quit()
-        sys.exit()
- 
+        is_running = False
+
     screen.blit(background,(0,0))
-    #ship.Move()
-    #sprites.update()
-  
+    ship.Move()
+    ship.Limit()
+    for asteroid in asteroids:
+      asteroid.Move()
+    sprites.update()
+    sprites.draw(screen)
+
+    pygame.display.flip()
 
     # if ship.rect.top <=0 or ship.rect.bottom >= options.WINDOW_HEIGHT:
     #   if ship.rect.top <= 0: ship.rect.top=0
     #   if ship.rect.bottom >= options.WINDOW_HEIGHT: ship.rect.bottom = options.WINDOW_HEIGHT
     # if ship.rect.left <=0 or ship.rect.right >= options.WINDOW_WIDTH:
     #   if ship.rect.left <= 0: ship.rect.left=0
-    #   if ship.rect.right >= options.WINDOW_WIDTH: ship.rect.right=options.WINDOW_WIDTH
-
-
-    pygame.display.update()
+    #   if ship.rect.right >= options.WINDOW_WIDTH: ship.rect.right=options.WINDOW_WIDT
+    
     gameClock.tick(60)
 
 

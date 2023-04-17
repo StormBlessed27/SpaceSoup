@@ -1,4 +1,4 @@
-import pygame
+import pygame, random
 
 from modules import SpaceShip, options, enemies, Bullet
 
@@ -76,7 +76,11 @@ def initialize():
     #Colide - bullet vs meteor 
     hits=pygame.sprite.groupcollide(asteroids,bullets,True,True)
     for hit in hits:
-      asteroid=enemies.Asteroid(options.ASTEROID_IMG)
+      asteroid = None
+      if random.randint(0,1) == 1:
+        asteroid=enemies.Asteroid(options.BIG_ASTEROID_IMG)
+      else:
+        asteroid = asteroid=enemies.Asteroid(options.MED_ASTEROID_IMG)
       sprites.add(asteroid)
       asteroids.add(asteroid)
       explosion_sound.play()

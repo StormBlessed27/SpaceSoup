@@ -1,8 +1,10 @@
 import pygame
-from modules import options
+
+from modules import options, Bullet
 
 class spaceShip(pygame.sprite.Sprite):
     '''Create the player SpaceShip'''
+    
     def __init__(self):
       super().__init__()
       self.image = pygame.image.load(options.SHIP_IMG).convert()
@@ -31,3 +33,10 @@ class spaceShip(pygame.sprite.Sprite):
       if self.rect.bottom >= options.HEIGHT: self.rect.bottom = options.HEIGHT
       if self.rect.left <=0: self.rect.left=0
       if self.rect.right >= options.WIDTH: self.rect.right=options.WIDTH
+
+    
+    def shoot(self,sprites,bullets):
+      bullet=Bullet.Bullet(self.rect.centerx,self.rect.top)
+      sprites.add(bullet)
+      bullets.add(bullet)
+

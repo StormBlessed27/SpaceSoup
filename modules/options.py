@@ -5,4 +5,6 @@ ASTEROID_IMG = "assets/sprites/meteorGrey_med1.png"
 SHIP_IMG= "assets/sprites/ship-2.png"
 BACKGROUND_IMG = "assets/images/fondo4.png"
 BULLET_IMG="assets/sprite/laser1.png"
+Laser_SD="assets/sounds/laser5.ogg"
+Explosion_SD="assets/sounds/explosion.wav"
 BLACK = (0,0,0)

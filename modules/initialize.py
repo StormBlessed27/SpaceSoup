@@ -14,6 +14,10 @@ def initialize():
   gameClock = pygame.time.Clock()
   is_running = True
 
+  #Load Sound Effects
+  bullet_sound=pygame.mixer.Sound(options.Laser_SD)
+  explosion_sound=pygame.mixer.Sound(options.Explosion_SD)
+
 
   sprites = pygame.sprite.Group()
   asteroids = pygame.sprite.Group()
@@ -21,6 +25,7 @@ def initialize():
   sprites.add(ship)
   bullet=Bullet.Bullet(0,0)
   bullets=pygame.sprite.Group()
+
 
 
   for i in range(9):
@@ -37,6 +42,8 @@ def initialize():
       elif event.type==pygame.KEYDOWN:
         if event.key==pygame.K_SPACE:
           ship.shoot(sprites,bullets)
+          bullet_sound.play()
+          
                  
     for bullet in bullets:
       bullet.Move()
@@ -55,9 +62,10 @@ def initialize():
     #Colide - bullet vs meteor 
     hits=pygame.sprite.groupcollide(asteroids,bullets,True,True)
     for hit in hits:
-      pass
-
-
+      asteroid=enemies.Asteroid(options.ASTEROID_IMG)
+      sprites.add(asteroid)
+      asteroids.add(asteroid)
+      explosion_sound.play()
    
     sprites.update()
     sprites.draw(screen)

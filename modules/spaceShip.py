@@ -4,6 +4,7 @@ from modules import options, Bullet
 
 class spaceShip(pygame.sprite.Sprite):
     '''Create the player SpaceShip'''
+    
     def __init__(self):
       super().__init__()
       self.image = pygame.image.load(options.SHIP_IMG).convert()

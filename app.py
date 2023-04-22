@@ -1,4 +1,4 @@
-from modules import Iniciar
+from modules import Initialize
 
-Iniciar.initialize()
+Initialize.initialize()
 

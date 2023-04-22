@@ -1,42 +1,42 @@
 import pygame, random
 
-from modules import SpaceShip, options, enemies, Bullet
+from modules import Bala, NaveEspacial, Opciones, Asteroid
 
 
 def initialize():
   
   #Initialize screen and pygame motor
-
-  
   pygame.init()
   pygame.mixer.init()
   EVENT_INCREASE_SPEED = pygame.USEREVENT+1
+  EVENT_AUTO_SHOOT = pygame.USEREVENT+2
   pygame.time.set_timer(EVENT_INCREASE_SPEED, 30000,7)
-  screen = pygame.display.set_mode((options.WIDTH, options.HEIGHT))
-  background = pygame.image.load(options.BACKGROUND_IMG)
+  pygame.time.set_timer(EVENT_AUTO_SHOOT,500 )
+  screen = pygame.display.set_mode((Opciones.WIDTH, Opciones.HEIGHT))
+  background = pygame.image.load(Opciones.BACKGROUND_IMG)
   pygame.display.set_caption("Space Soup")
   gameClock = pygame.time.Clock()
   is_running = True
 
   #Load Sound Effects
-  bullet_sound=pygame.mixer.Sound(options.Laser_SD)
-  explosion_sound=pygame.mixer.Sound(options.Explosion_SD)
+  bullet_sound=pygame.mixer.Sound(Opciones.BULLET_SD)
+  explosion_sound=pygame.mixer.Sound(Opciones.EXPLOSION_SD)
 
 
   sprites = pygame.sprite.Group()
   asteroids = pygame.sprite.Group()
-  ship = SpaceShip.spaceShip()
+  ship = NaveEspacial.spaceShip()
   sprites.add(ship)
-  bullet=Bullet.Bullet(0,0)
+  bullet=Bala.Bullet(0,0)
   bullets=pygame.sprite.Group()
 
 
 
   for i in range(9):
     if i%2 ==0:
-      asteroid = enemies.Asteroid(options.MED_ASTEROID_IMG)
+      asteroid = Asteroid.Asteroid(Opciones.MED_ASTEROID_IMG_1)
     else:
-      asteroid = enemies.Asteroid(options.BIG_ASTEROID_IMG)
+      asteroid = Asteroid.Asteroid(Opciones.BIG_ASTEROID_IMG_1)
     sprites.add(asteroid)
     asteroids.add(asteroid)
 
@@ -48,8 +48,7 @@ def initialize():
         pygame.quit()
         is_running = False
       if event.type == EVENT_INCREASE_SPEED:
-        for asteroid in asteroids:
-          asteroid.IncreaseSpeed()
+        Asteroid.Asteroid.IncreaseSpeed()
 
       elif event.type==pygame.KEYDOWN:
         if event.key==pygame.K_SPACE:
@@ -69,18 +68,19 @@ def initialize():
 
 
     #Colide - ship vs meteor
-    hits =pygame.sprite.spritecollide(ship,asteroids, True)
-    if hits:
-      is_running=False
+    
+    #hits =pygame.sprite.spritecollide(ship,asteroids, True)
+    #if hits:
+    #  is_running=False
 
     #Colide - bullet vs meteor 
     hits=pygame.sprite.groupcollide(asteroids,bullets,True,True)
     for hit in hits:
       asteroid = None
       if random.randint(0,1) == 1:
-        asteroid=enemies.Asteroid(options.BIG_ASTEROID_IMG)
+        asteroid=Asteroid.Asteroid(Opciones.BIG_ASTEROID_IMG_1)
       else:
-        asteroid = asteroid=enemies.Asteroid(options.MED_ASTEROID_IMG)
+        asteroid = asteroid=Asteroid.Asteroid(Opciones.MED_ASTEROID_IMG_1)
       sprites.add(asteroid)
       asteroids.add(asteroid)
       explosion_sound.play()

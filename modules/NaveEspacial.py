@@ -1,21 +1,21 @@
 import pygame
 
-from modules import options, Bullet
+from modules import Bala, Opciones
 
 class spaceShip(pygame.sprite.Sprite):
-    '''Create the player SpaceShip'''
+    '''Crea la astronave del jugador'''
     
     def __init__(self):
       super().__init__()
-      self.image = pygame.image.load(options.SHIP_IMG).convert()
-      self.image.set_colorkey(options.BLACK)
+      self.image = pygame.image.load(Opciones.SHIP_IMG).convert()
+      self.image.set_colorkey(Opciones.BLACK)
       self.rect = self.image.get_rect()
-      self.rect.centerx= options.WIDTH//2 
-      self.rect.centery= options.HEIGHT//2
-      self.speed = options.SPEED
+      self.rect.centerx= Opciones.WIDTH//2 
+      self.rect.centery= Opciones.HEIGHT//2
+      self.speed = Opciones.SPEED
 
     def Move(self):
-      """Move the spaceship"""
+      """Mueve la Astronave"""
       keysState = pygame.key.get_pressed()
       if keysState[pygame.K_d] or keysState[pygame.K_RIGHT]:
         self.rect.x += self.speed 
@@ -28,15 +28,16 @@ class spaceShip(pygame.sprite.Sprite):
         self.rect.y -= self.speed
 
     def Limit(self):
-      """Adds colitions with the window limits"""
+      """Añade coliciones con los limites de la pantalla"""
       if self.rect.top <=0: self.rect.top=0
-      if self.rect.bottom >= options.HEIGHT: self.rect.bottom = options.HEIGHT
+      if self.rect.bottom >= Opciones.HEIGHT: self.rect.bottom = Opciones.HEIGHT
       if self.rect.left <=0: self.rect.left=0
-      if self.rect.right >= options.WIDTH: self.rect.right=options.WIDTH
+      if self.rect.right >= Opciones.WIDTH: self.rect.right=Opciones.WIDTH
 
     
     def shoot(self,sprites,bullets):
-      bullet=Bullet.Bullet(self.rect.centerx,self.rect.top)
+      """Se encarga de la accion de dispara de la Astronave"""
+      bullet=Bala.Bullet(self.rect.centerx,self.rect.top)
       sprites.add(bullet)
       bullets.add(bullet)
 

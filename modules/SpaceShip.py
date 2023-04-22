@@ -36,7 +36,7 @@ class spaceShip(pygame.sprite.Sprite):
 
     
     def shoot(self,sprites,bullets):
-      """Se encarga de la accion de dispara de la Astronave"""
+      """Se encarga de la accion de disparar de la Astronave"""
       bullet=Bullet.Bullet(self.rect.centerx,self.rect.top)
       sprites.add(bullet)
       bullets.add(bullet)

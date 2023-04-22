@@ -1,6 +1,6 @@
 import pygame, random
 
-from modules import Bala, NaveEspacial, Opciones, Asteroid
+from modules import Asteroid, Bullet, Options, SpaceShip
 
 
 def initialize():
@@ -12,31 +12,31 @@ def initialize():
   EVENT_AUTO_SHOOT = pygame.USEREVENT+2
   pygame.time.set_timer(EVENT_INCREASE_SPEED, 30000,7)
   pygame.time.set_timer(EVENT_AUTO_SHOOT,500 )
-  screen = pygame.display.set_mode((Opciones.WIDTH, Opciones.HEIGHT))
-  background = pygame.image.load(Opciones.BACKGROUND_IMG)
+  screen = pygame.display.set_mode((Options.WIDTH, Options.HEIGHT))
+  background = pygame.image.load(Options.BACKGROUND_IMG)
   pygame.display.set_caption("Space Soup")
   gameClock = pygame.time.Clock()
   is_running = True
 
   #Load Sound Effects
-  bullet_sound=pygame.mixer.Sound(Opciones.BULLET_SD)
-  explosion_sound=pygame.mixer.Sound(Opciones.EXPLOSION_SD)
+  bullet_sound=pygame.mixer.Sound(Options.BULLET_SD)
+  explosion_sound=pygame.mixer.Sound(Options.EXPLOSION_SD)
 
 
   sprites = pygame.sprite.Group()
   asteroids = pygame.sprite.Group()
-  ship = NaveEspacial.spaceShip()
+  ship = SpaceShip.spaceShip()
   sprites.add(ship)
-  bullet=Bala.Bullet(0,0)
+  bullet=Bullet.Bullet(0,0)
   bullets=pygame.sprite.Group()
 
 
 
   for i in range(9):
     if i%2 ==0:
-      asteroid = Asteroid.Asteroid(Opciones.MED_ASTEROID_IMG_1)
+      asteroid = Asteroid.Asteroid(Options.MED_ASTEROID_IMG_1)
     else:
-      asteroid = Asteroid.Asteroid(Opciones.BIG_ASTEROID_IMG_1)
+      asteroid = Asteroid.Asteroid(Options.BIG_ASTEROID_IMG_1)
     sprites.add(asteroid)
     asteroids.add(asteroid)
 
@@ -78,9 +78,9 @@ def initialize():
     for hit in hits:
       asteroid = None
       if random.randint(0,1) == 1:
-        asteroid=Asteroid.Asteroid(Opciones.BIG_ASTEROID_IMG_1)
+        asteroid=Asteroid.Asteroid(Options.BIG_ASTEROID_IMG_1)
       else:
-        asteroid = asteroid=Asteroid.Asteroid(Opciones.MED_ASTEROID_IMG_1)
+        asteroid = asteroid=Asteroid.Asteroid(Options.MED_ASTEROID_IMG_1)
       sprites.add(asteroid)
       asteroids.add(asteroid)
       explosion_sound.play()

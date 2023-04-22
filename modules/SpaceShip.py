@@ -1,18 +1,18 @@
 import pygame
 
-from modules import Bala, Opciones
+from modules import Bullet, Options
 
 class spaceShip(pygame.sprite.Sprite):
     '''Crea la astronave del jugador'''
     
     def __init__(self):
       super().__init__()
-      self.image = pygame.image.load(Opciones.SHIP_IMG).convert()
-      self.image.set_colorkey(Opciones.BLACK)
+      self.image = pygame.image.load(Options.SHIP_IMG).convert()
+      self.image.set_colorkey(Options.BLACK)
       self.rect = self.image.get_rect()
-      self.rect.centerx= Opciones.WIDTH//2 
-      self.rect.centery= Opciones.HEIGHT//2
-      self.speed = Opciones.SPEED
+      self.rect.centerx= Options.WIDTH//2 
+      self.rect.centery= Options.HEIGHT//2
+      self.speed = Options.SPEED
 
     def Move(self):
       """Mueve la Astronave"""
@@ -30,14 +30,14 @@ class spaceShip(pygame.sprite.Sprite):
     def Limit(self):
       """Añade coliciones con los limites de la pantalla"""
       if self.rect.top <=0: self.rect.top=0
-      if self.rect.bottom >= Opciones.HEIGHT: self.rect.bottom = Opciones.HEIGHT
+      if self.rect.bottom >= Options.HEIGHT: self.rect.bottom = Options.HEIGHT
       if self.rect.left <=0: self.rect.left=0
-      if self.rect.right >= Opciones.WIDTH: self.rect.right=Opciones.WIDTH
+      if self.rect.right >= Options.WIDTH: self.rect.right=Options.WIDTH
 
     
     def shoot(self,sprites,bullets):
       """Se encarga de la accion de dispara de la Astronave"""
-      bullet=Bala.Bullet(self.rect.centerx,self.rect.top)
+      bullet=Bullet.Bullet(self.rect.centerx,self.rect.top)
       sprites.add(bullet)
       bullets.add(bullet)
 

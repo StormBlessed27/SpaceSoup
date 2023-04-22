@@ -1,16 +1,16 @@
 import pygame, random
-from modules import Opciones
+from modules import Options
 
 class Asteroid(pygame.sprite.Sprite):
 
-    speedy = Opciones.SPEED
+    speedy = Options.SPEED
 
     def __init__(self, img):
         super().__init__()
         self.image = pygame.image.load(img).convert()
-        self.image.set_colorkey(Opciones.BLACK)
+        self.image.set_colorkey(Options.BLACK)
         self.rect = self.image.get_rect(  )
-        self.rect.x =random.randrange(Opciones.WIDTH-self.rect.width)
+        self.rect.x =random.randrange(Options.WIDTH-self.rect.width)
         self.rect.y =random.randrange(-100, -40)
         self.speedx = random.randrange(-5,5)
 
@@ -19,8 +19,8 @@ class Asteroid(pygame.sprite.Sprite):
       """Se encarga de mover el asteroide"""
       self.rect.y +=self.speedy
       self.rect.x += self.speedx
-      if self.rect.top > Opciones.HEIGHT+10 or self.rect.left< -20 or self.rect.right>Opciones.WIDTH+20:
-          self.rect.x =random.randrange(Opciones.WIDTH-self.rect.width)
+      if self.rect.top > Options.HEIGHT+10 or self.rect.left< -20 or self.rect.right>Options.WIDTH+20:
+          self.rect.x =random.randrange(Options.WIDTH-self.rect.width)
           self.rect.y =random.randrange(-100, -40)
     
     def IncreaseSpeed():

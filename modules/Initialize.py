@@ -1,6 +1,6 @@
 import pygame, random
 
-from modules import Asteroid, Bullet, SpaceShip, Options, Score
+from modules import Asteroid, Bullet, SpaceShip, Options, Score, GameOver
 
 
 def initialize():
@@ -49,7 +49,8 @@ def initialize():
   score = 0
 
   #Pantalla de Game Over
-  #game_over = True
+  game_over = True
+
   #Creacion de los asteroides
   for i in range(9):
     if i%2 ==0:
@@ -61,6 +62,24 @@ def initialize():
 
   #Iniciando el ciclo de juego
   while is_running:
+
+    if game_over:
+      
+      show_go_screen()
+      game_over = False
+      sprites = pygame.sprite.Group()
+      asteroids = pygame.sprite.Group()
+      bullets=pygame.sprite.Group()
+
+      for i in range(9):
+        if i%2 ==0:
+          asteroid = Asteroid.Asteroid(Options.MED_ASTEROID_IMG_1)
+        else:
+          asteroid = Asteroid.Asteroid(Options.BIG_ASTEROID_IMG_1)
+        sprites.add(asteroid)
+        asteroids.add(asteroid)
+
+        score = 0
 
     #Ciclo de eventos
     for event in pygame.event.get():
@@ -120,6 +139,7 @@ def initialize():
       explosion_sound.play()
     sprites.update()
     sprites.draw(screen)
+    game_over = True
     
     Score.Score.draw_text(screen, str(score),  25, Options.WIDTH//2, 10)
     pygame.display.flip()

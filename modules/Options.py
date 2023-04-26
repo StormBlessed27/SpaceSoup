@@ -4,9 +4,9 @@ WIDTH = 1000
 #Alto de la pantalla
 HEIGHT = 600
 
-#Color negro, evita tenet que declararlo
+#Color negro y blanco, evita tenet que declararlo
 BLACK = (0,0,0)
-
+WHITE =(255, 255, 255)
 #velocidad estandar. Se usa tanto en la nave, como en la velocidad vertical de los asteroides
 SPEED = 3
 

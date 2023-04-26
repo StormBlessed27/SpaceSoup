@@ -1,4 +1,5 @@
 import pygame, random
+
 from modules import Options
 
 class Asteroid(pygame.sprite.Sprite):
@@ -13,7 +14,6 @@ class Asteroid(pygame.sprite.Sprite):
         self.rect.x =random.randrange(Options.WIDTH-self.rect.width)
         self.rect.y =random.randrange(-100, -40)
         self.speedx = random.randrange(-5,5)
-
 
     def Move(self):
       """Se encarga de mover el asteroide"""

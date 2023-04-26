@@ -1,6 +1,6 @@
 import pygame, random
 
-from modules import Asteroid, Bullet, SpaceShip, Options
+from modules import Asteroid, Bullet, SpaceShip, Options, Score
 
 
 def initialize():
@@ -12,10 +12,12 @@ def initialize():
   #creando nuevos eventos
   EVENT_INCREASE_SPEED = pygame.USEREVENT+1
   EVENT_AUTO_SHOOT = pygame.USEREVENT+2
+  EVENT_SCORE_TIME = pygame.USEREVENT+3
 
   #Creando temporizadores para los eventos
   pygame.time.set_timer(EVENT_INCREASE_SPEED, 1000,7)
   pygame.time.set_timer(EVENT_AUTO_SHOOT,300 )
+  pygame.time.set_timer(EVENT_SCORE_TIME, 2000)
 
   #inicializando la ventana, el fondo de pantalla, el titulo de la pantalla y el reloj de juego 
   screen = pygame.display.set_mode((Options.WIDTH, Options.HEIGHT))
@@ -43,7 +45,11 @@ def initialize():
   #creando el conjunto de balas
   bullets=pygame.sprite.Group()
 
+  #Inicializamos el marcador
+  score = 0
 
+  #Pantalla de Game Over
+  #game_over = True
   #Creacion de los asteroides
   for i in range(9):
     if i%2 ==0:
@@ -58,6 +64,7 @@ def initialize():
 
     #Ciclo de eventos
     for event in pygame.event.get():
+
       #Evento quit
       if event.type == pygame.QUIT:
         pygame.quit()
@@ -70,6 +77,11 @@ def initialize():
       if event.type==EVENT_AUTO_SHOOT:
         ship.shoot(sprites,bullets)
         bullet_sound.play()
+      
+      #Evento de aumento de puntos por tiempo
+      if event.type == EVENT_SCORE_TIME:
+        score +=1
+        
     for bullet in bullets:
       bullet.Move()
 
@@ -97,6 +109,7 @@ def initialize():
     #Colide - bullet vs meteor 
     hits=pygame.sprite.groupcollide(asteroids,bullets,True,True)
     for hit in hits:
+      score += 10
       asteroid = None
       if random.randint(0,1) == 1:
         asteroid=Asteroid.Asteroid(Options.BIG_ASTEROID_IMG_1)
@@ -107,7 +120,8 @@ def initialize():
       explosion_sound.play()
     sprites.update()
     sprites.draw(screen)
-
+    
+    Score.Score.draw_text(screen, str(score),  25, Options.WIDTH//2, 10)
     pygame.display.flip()
 
     

@@ -2,18 +2,25 @@ import pygame
 
 from modules import Options
 
-screen = pygame.display.set_mode((Options.WIDTH, Options.HEIGHT))
-gameClock = pygame.time.Clock()
 
-def show_go_screen(draw_text):
+def draw_text(surface, text, size, x, y):
+        
+        font = pygame.font.SysFont("serif", size)
+        text_surface = font.render(text, True, Options.WHITE)
+        text_rect = text_surface.get_rect()
+        text_rect.midtop = (x, y)
+        surface.blit(text_surface, text_rect)
+
+def show_go_screen(screen, clock, background):
+    pygame.init()
+    screen.blit(background,(0,0))
     draw_text(screen, "SPACESOUP", 65, Options.WIDTH//2, Options.HEIGHT//4)
     draw_text(screen, "Instrucciones van aquí", 27, Options.WIDTH//2, Options.HEIGHT//2)
     draw_text(screen, "Press Key", 20, Options.WIDTH//2, Options.HEIGHT*3/4)
     pygame.display.flip()
     waiting = True
-    
     while waiting:
-        gameClock.tick(60)
+        clock.tick(60)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()

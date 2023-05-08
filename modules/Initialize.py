@@ -1,6 +1,6 @@
 import pygame, random
 
-from modules import Asteroid, Bullet, SpaceShip, Options, Score, GameOver
+from modules import Asteroid, Bullet, Score, SpaceShip, Options, GameOver
 
 
 def initialize():
@@ -11,11 +11,12 @@ def initialize():
 
   #creando nuevos eventos
   EVENT_INCREASE_SPEED = pygame.USEREVENT+1
+  
   EVENT_AUTO_SHOOT = pygame.USEREVENT+2
   EVENT_SCORE_TIME = pygame.USEREVENT+3
 
   #Creando temporizadores para los eventos
-  pygame.time.set_timer(EVENT_INCREASE_SPEED, 1000,7)
+  pygame.time.set_timer(EVENT_INCREASE_SPEED, 1000,12)
   pygame.time.set_timer(EVENT_AUTO_SHOOT,300 )
   pygame.time.set_timer(EVENT_SCORE_TIME, 2000)
 
@@ -25,52 +26,44 @@ def initialize():
   pygame.display.set_caption("Space Soup")
   gameClock = pygame.time.Clock()
 
-  #variable controladore del ciclo de juego
+
+  #Creando la bala
+  bullet=Bullet.Bullet(0,0)
+
+  #variable controladora del ciclo de juego
   is_running = True
 
   #Cargando efectos de sonido
   bullet_sound=pygame.mixer.Sound(Options.BULLET_SD)
   explosion_sound=pygame.mixer.Sound(Options.EXPLOSION_SD)
 
-  #Conjunto de sprites
-  sprites = pygame.sprite.Group()
-  #Conjunto de asteroides
-  asteroids = pygame.sprite.Group()
-  #Astronave del jugador
-  ship = SpaceShip.spaceShip()
-  #Se añade la nave al conjunto de sprites
-  sprites.add(ship)
-  #Creando la bala
-  bullet=Bullet.Bullet(0,0)
-  #creando el conjunto de balas
-  bullets=pygame.sprite.Group()
-
-  #Inicializamos el marcador
-  score = 0
+  
 
   #Pantalla de Game Over
   game_over = True
-
-  #Creacion de los asteroides
-  for i in range(9):
-    if i%2 ==0:
-      asteroid = Asteroid.Asteroid(Options.MED_ASTEROID_IMG_1)
-    else:
-      asteroid = Asteroid.Asteroid(Options.BIG_ASTEROID_IMG_1)
-    sprites.add(asteroid)
-    asteroids.add(asteroid)
-
   #Iniciando el ciclo de juego
   while is_running:
-
     if game_over:
-      
-      show_go_screen()
-      game_over = False
-      sprites = pygame.sprite.Group()
-      asteroids = pygame.sprite.Group()
-      bullets=pygame.sprite.Group()
+      GameOver.show_go_screen(screen,gameClock, background)
 
+      #Quitando pantalla de game over
+      game_over = False
+      #Reiniciando velocidad de asteroides
+      Asteroid.Asteroid.RestoreInitSpeed()
+      #Conjunto de sprites
+      sprites = pygame.sprite.Group()
+      #Conjunto de asteroides
+      asteroids = pygame.sprite.Group()
+      #creando el conjunto de balas
+      bullets=pygame.sprite.Group()
+      
+
+      #Astronave del jugador
+      ship = SpaceShip.spaceShip()
+      #Se añade la nave al conjunto de sprites
+      sprites.add(ship)
+      
+      #Creacion de los asteroides
       for i in range(9):
         if i%2 ==0:
           asteroid = Asteroid.Asteroid(Options.MED_ASTEROID_IMG_1)
@@ -78,15 +71,14 @@ def initialize():
           asteroid = Asteroid.Asteroid(Options.BIG_ASTEROID_IMG_1)
         sprites.add(asteroid)
         asteroids.add(asteroid)
-
-        score = 0
-
+      #Inicializamos el marcador
+      score = 0
+    
+    gameClock.tick(60)
     #Ciclo de eventos
     for event in pygame.event.get():
-
       #Evento quit
       if event.type == pygame.QUIT:
-        pygame.quit()
         is_running = False
       #Evento de aumento de velocidad
       if event.type == EVENT_INCREASE_SPEED:
@@ -105,8 +97,7 @@ def initialize():
       bullet.Move()
 
 
-    #Añadiendo el fondo de pantalla
-    screen.blit(background,(0,0))
+    
 
     #Movimiento de la nave
     ship.Move()
@@ -123,7 +114,7 @@ def initialize():
     #Colide - ship vs meteor
     hits =pygame.sprite.spritecollide(ship,asteroids, True)
     if hits:
-      is_running=False
+      game_over=True
 
     #Colide - bullet vs meteor 
     hits=pygame.sprite.groupcollide(asteroids,bullets,True,True)
@@ -137,12 +128,16 @@ def initialize():
       sprites.add(asteroid)
       asteroids.add(asteroid)
       explosion_sound.play()
+    
+    #Añadiendo el fondo de pantalla
+    screen.blit(background,(0,0))
     sprites.update()
     sprites.draw(screen)
-    game_over = True
+
+    
     
     Score.Score.draw_text(screen, str(score),  25, Options.WIDTH//2, 10)
     pygame.display.flip()
 
     
-    gameClock.tick(60)
+    

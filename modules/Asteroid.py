@@ -26,3 +26,6 @@ class Asteroid(pygame.sprite.Sprite):
     def IncreaseSpeed():
         """Aumenta la velocidad de caida de los asteroides"""
         Asteroid.speedy += 1
+    def RestoreInitSpeed():
+        """Devuelve la velocidad original a los asteroides"""
+        Asteroid.speedy = Options.SPEED

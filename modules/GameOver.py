@@ -15,8 +15,8 @@ def show_go_screen(screen, clock, background):
     pygame.init()
     screen.blit(background,(0,0))
     draw_text(screen, "SPACESOUP", 65, Options.WIDTH//2, Options.HEIGHT//4)
-    draw_text(screen, "Instrucciones van aquí", 27, Options.WIDTH//2, Options.HEIGHT//2)
-    draw_text(screen, "Press Key", 20, Options.WIDTH//2, Options.HEIGHT*3/4)
+    draw_text(screen, Options.INSTRUCTIONS, 27, Options.WIDTH//2, Options.HEIGHT//2)
+    draw_text(screen, "Press Space To start", 20, Options.WIDTH//2, Options.HEIGHT*3/4)
     pygame.display.flip()
     waiting = True
     while waiting:
@@ -25,5 +25,6 @@ def show_go_screen(screen, clock, background):
             if event.type == pygame.QUIT:
                 pygame.quit()
             if event.type == pygame.KEYUP:
+              if event.key == pygame.K_SPACE:
                 waiting = False
 

@@ -1,7 +1,6 @@
 import pygame, random
 
-from modules import Asteroid, Bullet, Score, SpaceShip, Options, GameOver
-
+from modules import Asteroid, Bullet, Score, SpaceShip, Options, GameOver, Explosion
 
 def initialize():
   
@@ -26,9 +25,20 @@ def initialize():
   pygame.display.set_caption("Space Soup")
   gameClock = pygame.time.Clock()
 
-
   #Creando la bala
   bullet=Bullet.Bullet(0,0)
+
+  #Creando los frames de la explosion
+  explosionIMG = []
+  for explosionFrame in Options.EXPLOSION_LIST:
+    frame = pygame.image.load(explosionFrame).convert()
+    frame.set_colorkey(Options.BLACK)
+    frame_scaled = pygame.transform.scale(frame,(70,70))
+    explosionIMG.append(frame_scaled)
+  
+  Explosion.Explosion.explosionFrames = explosionIMG
+  Explosion.Explosion.clock = gameClock
+
 
   #variable controladora del ciclo de juego
   is_running = True
@@ -54,6 +64,8 @@ def initialize():
       sprites = pygame.sprite.Group()
       #Conjunto de asteroides
       asteroids = pygame.sprite.Group()
+      #Conjunto de Explosiones
+      explosions = pygame.sprite.Group()
       #creando el conjunto de balas
       bullets=pygame.sprite.Group()
       
@@ -64,7 +76,7 @@ def initialize():
       sprites.add(ship)
       
       #Creacion de los asteroides
-      for i in range(9):
+      for i in range(10):
         if i%2 ==0:
           asteroid = Asteroid.Asteroid(Options.MED_ASTEROID_IMG_1)
         else:
@@ -96,9 +108,6 @@ def initialize():
     for bullet in bullets:
       bullet.Move()
 
-
-    
-
     #Movimiento de la nave
     ship.Move()
     #Limites con la pantalla
@@ -128,6 +137,9 @@ def initialize():
       sprites.add(asteroid)
       asteroids.add(asteroid)
       explosion_sound.play()
+      explosion = Explosion.Explosion(hit.rect.center)
+      sprites.add(explosion)
+
     
     #Añadiendo el fondo de pantalla
     screen.blit(background,(0,0))

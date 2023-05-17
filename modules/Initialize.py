@@ -48,14 +48,15 @@ def initialize():
   explosion_sound=pygame.mixer.Sound(Options.EXPLOSION_SD)
 
   
-
+  
   #Pantalla de Game Over
   game_over = True
   #Iniciando el ciclo de juego
   while is_running:
     if game_over:
-      GameOver.show_go_screen(screen,gameClock, background)
-
+      closewindow = GameOver.show_go_screen(screen,gameClock, background, pygame)
+      if (closewindow):
+          pygame.quit()
       #Quitando pantalla de game over
       game_over = False
       #Reiniciando velocidad de asteroides
@@ -91,12 +92,12 @@ def initialize():
     for event in pygame.event.get():
       #Evento quit
       if event.type == pygame.QUIT:
+        pygame.quit()
         is_running = False
       #Evento de aumento de velocidad
       if event.type == EVENT_INCREASE_SPEED:
         Asteroid.Asteroid.IncreaseSpeed()
 
-      
       if event.type==EVENT_AUTO_SHOOT:
         ship.shoot(sprites,bullets)
         bullet_sound.play()
@@ -144,6 +145,7 @@ def initialize():
     #Añadiendo el fondo de pantalla
     screen.blit(background,(0,0))
     sprites.update()
+    explosions.update()
     sprites.draw(screen)
 
     

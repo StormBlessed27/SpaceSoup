@@ -15,8 +15,8 @@ def initialize():
   EVENT_SCORE_TIME = pygame.USEREVENT+3
 
   #Creando temporizadores para los eventos
-  pygame.time.set_timer(EVENT_INCREASE_SPEED, 1000,12)
-  pygame.time.set_timer(EVENT_AUTO_SHOOT,300 )
+  pygame.time.set_timer(EVENT_INCREASE_SPEED, 1500,12)
+  pygame.time.set_timer(EVENT_AUTO_SHOOT,300)
   pygame.time.set_timer(EVENT_SCORE_TIME, 2000)
 
   #inicializando la ventana, el fondo de pantalla, el titulo de la pantalla y el reloj de juego 
@@ -24,9 +24,6 @@ def initialize():
   background = pygame.image.load(Options.BACKGROUND_IMG)
   pygame.display.set_caption("Space Soup")
   gameClock = pygame.time.Clock()
-
-  #Creando la bala
-  bullet=Bullet.Bullet(0,0)
 
   #Creando los frames de la explosion
   explosionIMG = []
@@ -37,8 +34,6 @@ def initialize():
     explosionIMG.append(frame_scaled)
   
   Explosion.Explosion.explosionFrames = explosionIMG
-  Explosion.Explosion.clock = gameClock
-
 
   #variable controladora del ciclo de juego
   is_running = True
@@ -55,8 +50,10 @@ def initialize():
   while is_running:
     if game_over:
       closewindow = GameOver.show_go_screen(screen,gameClock, background, pygame)
+      print(closewindow)
       if (closewindow):
           pygame.quit()
+          return False
       #Quitando pantalla de game over
       game_over = False
       #Reiniciando velocidad de asteroides
@@ -70,7 +67,6 @@ def initialize():
       #creando el conjunto de balas
       bullets=pygame.sprite.Group()
       
-
       #Astronave del jugador
       ship = SpaceShip.spaceShip()
       #Se añade la nave al conjunto de sprites

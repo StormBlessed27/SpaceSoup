@@ -3,7 +3,7 @@ import pygame
 from modules import Bullet, Options
 
 class spaceShip(pygame.sprite.Sprite):
-    '''Crea la astronave del jugador'''
+    """Crea la astronave del jugador"""
     
     def __init__(self):
       super().__init__()

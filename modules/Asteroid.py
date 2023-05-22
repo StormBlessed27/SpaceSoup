@@ -3,10 +3,10 @@ import pygame, random
 from modules import Options
 
 class Asteroid(pygame.sprite.Sprite):
-
+    """Clase Asteroide"""
     speedy = Options.SPEED
-
     def __init__(self, img):
+        """Crea un asteroide y le establece una velocidad en x y en y"""
         super().__init__()
         self.image = pygame.image.load(img).convert()
         self.image.set_colorkey(Options.BLACK)

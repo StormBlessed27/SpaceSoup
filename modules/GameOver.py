@@ -2,7 +2,7 @@ from modules import Options
 
 
 def draw_text(surface, text, size, x, y, pygame):
-        
+        """Dibuja en la pantalla el texto deseado"""
         font = pygame.font.SysFont("serif", size)
         text_surface = font.render(text, True, Options.WHITE)
         text_rect = text_surface.get_rect()
@@ -10,6 +10,7 @@ def draw_text(surface, text, size, x, y, pygame):
         surface.blit(text_surface, text_rect)
 
 def show_go_screen(screen, clock, background,pygame):
+    """Controla la pantalla de incio y fin de juego"""
     screen.blit(background,(0,0))
     draw_text(screen, "SPACESOUP", 65, Options.WIDTH//2, Options.HEIGHT//4,pygame)
     draw_text(screen, Options.INSTRUCTIONS, 27, Options.WIDTH//2, Options.HEIGHT//2,pygame)

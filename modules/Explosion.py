@@ -20,6 +20,7 @@ class Explosion(pygame.sprite.Sprite):
 		self.frame_rate = 100 # Velocidad
 
 	def update(self):
+		"""Actualiza los frames de la explosion"""
 		now = pygame.time.get_ticks()
 		if now - self.last_update > self.frame_rate:
 			self.last_update = now
